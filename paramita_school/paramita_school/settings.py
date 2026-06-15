@@ -7,10 +7,10 @@ pymysql.install_as_MySQLdb()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = config('SECRET_KEY', default='django-insecure-change-this-key')
+SECRET_KEY = config('SECRET_KEY', default='django-insecure-4x9v2z7k1m6p3q8r5t0y1u4i7o2a6s9d8f5g3h2j1k0l7n4b6c')
 DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [host.strip() for host in config('ALLOWED_HOSTS', default='*').split(',') if host.strip()]
 
 INSTALLED_APPS = [
     'django.contrib.admin',

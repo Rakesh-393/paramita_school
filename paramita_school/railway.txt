@@ -15,14 +15,21 @@ Step-by-step Railway deployment:
 5. Add a PostgreSQL database inside Railway.
 6. Copy the Railway `DATABASE_URL` and add it to project variables.
 7. Set `SECRET_KEY` and `DEBUG=False` in Railway variables.
-8. Use build command: `pip install -r requirements.txt`.
-9. Use start command: `gunicorn paramita_school.wsgi:application --bind 0.0.0.0:$PORT`.
-10. Run migrations on Railway after deploy.
-11. Open the Railway URL and test the site.
+8. Set `ALLOWED_HOSTS` to your Railway app domain, for example `your-app-name.up.railway.app`.
+9. Use build command: `pip install -r requirements.txt`.
+10. Use start command: `gunicorn paramita_school.wsgi:application --bind 0.0.0.0:$PORT`.
+11. Run migrations on Railway after deploy.
+12. Open the Railway URL and test the site.
 
 Notes:
 - SQLite is only for local development.
 - Railway storage is not persistent for uploaded media unless you use cloud storage.
+
+Recommended Railway variables:
+- `SECRET_KEY=django-insecure-4x9v2z7k1m6p3q8r5t0y1u4i7o2a6s9d8f5g3h2j1k0l7n4b6c`
+- `DEBUG=False`
+- `DATABASE_URL=<your-railway-postgres-url>`
+- `ALLOWED_HOSTS=your-app-name.up.railway.app,localhost,127.0.0.1`
 
 How to update the project from Git:
 1. Make your code changes in the project folder.
