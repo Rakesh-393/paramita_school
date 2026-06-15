@@ -1,0 +1,24 @@
+Railway Deployment Changes
+
+What changed in the project:
+1. Django now reads `DATABASE_URL` first.
+2. Added PostgreSQL support for Railway using `dj-database-url`.
+3. Added `psycopg2-binary` to connect to Railway PostgreSQL.
+4. Kept the old MySQL and SQLite fallback so local development still works.
+5. Added `DATABASE_URL` to `.env.example`.
+
+Step-by-step Railway deployment:
+1. Push this code to GitHub.
+2. Open Railway and create a new project.
+3. Deploy from your GitHub repository.
+4. Add a PostgreSQL database inside Railway.
+5. Copy the Railway `DATABASE_URL` and add it to project variables.
+6. Set `SECRET_KEY` and `DEBUG=False` in Railway variables.
+7. Use build command: `pip install -r requirements.txt`.
+8. Use start command: `gunicorn paramita_school.wsgi:application --bind 0.0.0.0:$PORT`.
+9. Run migrations on Railway after deploy.
+10. Open the Railway URL and test the site.
+
+Notes:
+- SQLite is only for local development.
+- Railway storage is not persistent for uploaded media unless you use cloud storage.

@@ -78,6 +78,7 @@ Edit `.env` with your actual MySQL credentials:
 ```
 SECRET_KEY=django-insecure-replace-this-with-a-strong-random-key
 DEBUG=True
+DB_ENGINE=mysql
 DB_NAME=paramita_db
 DB_USER=root
 DB_PASSWORD=yourpassword
@@ -151,6 +152,12 @@ Log in to `/admin/` and fill these in order:
 # In .env
 DEBUG=False
 SECRET_KEY=<strong-50-char-random-key>
+DB_ENGINE=mysql
+DB_NAME=<production-database-name>
+DB_USER=<production-database-user>
+DB_PASSWORD=<production-database-password>
+DB_HOST=<production-database-host>
+DB_PORT=3306
 
 # Collect static files
 python manage.py collectstatic

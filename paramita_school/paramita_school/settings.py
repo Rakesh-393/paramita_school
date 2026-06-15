@@ -1,5 +1,6 @@
 from pathlib import Path
 from decouple import config
+import dj_database_url
 
 import pymysql
 pymysql.install_as_MySQLdb()
@@ -53,9 +54,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'paramita_school.wsgi.application'
 
-DB_ENGINE = config('DB_ENGINE', default='sqlite')
+database_url = config('DATABASE_URL', default='')
 
-if DB_ENGINE == 'mysql':
+if database_url:
+    DATABASES = {
+        'default': dj_database_url.parse(database_url, conn_max_age=600)
+    }
+elif config('DB_ENGINE', default='sqlite') == 'mysql':
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
