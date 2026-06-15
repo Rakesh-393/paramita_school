@@ -11,14 +11,24 @@ Step-by-step Railway deployment:
 1. Push this code to GitHub.
 2. Open Railway and create a new project.
 3. Deploy from your GitHub repository.
-4. Add a PostgreSQL database inside Railway.
-5. Copy the Railway `DATABASE_URL` and add it to project variables.
-6. Set `SECRET_KEY` and `DEBUG=False` in Railway variables.
-7. Use build command: `pip install -r requirements.txt`.
-8. Use start command: `gunicorn paramita_school.wsgi:application --bind 0.0.0.0:$PORT`.
-9. Run migrations on Railway after deploy.
-10. Open the Railway URL and test the site.
+4. In the Railway service settings, set the Root Directory to `paramita_school` because `manage.py` and `requirements.txt` are inside that folder.
+5. Add a PostgreSQL database inside Railway.
+6. Copy the Railway `DATABASE_URL` and add it to project variables.
+7. Set `SECRET_KEY` and `DEBUG=False` in Railway variables.
+8. Use build command: `pip install -r requirements.txt`.
+9. Use start command: `gunicorn paramita_school.wsgi:application --bind 0.0.0.0:$PORT`.
+10. Run migrations on Railway after deploy.
+11. Open the Railway URL and test the site.
 
 Notes:
 - SQLite is only for local development.
 - Railway storage is not persistent for uploaded media unless you use cloud storage.
+
+How to update the project from Git:
+1. Make your code changes in the project folder.
+2. Open terminal in the repo root.
+3. Run: `git add .`
+4. Run: `git commit -m "your message here"`
+5. Run: `git push origin main`
+6. Railway will redeploy automatically after the push if GitHub deploys are enabled.
+7. If Railway does not redeploy, open the Railway project and click Redeploy or Deploy Latest.
