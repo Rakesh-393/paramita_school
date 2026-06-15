@@ -1,0 +1,1 @@
+web: gunicorn paramita_school.wsgi --log-file -

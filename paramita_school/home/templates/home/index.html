@@ -1,0 +1,709 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Paramita Heritage School</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&family=Cormorant+Garamond:wght@300;400;500;600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet" />
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     NAVBAR
+══════════════════════════════════════════ -->
+<nav class="site-nav" id="siteNav">
+  <div class="nav-inner container-fluid px-4">
+    <a href="/" class="nav-logo">
+      {% if site.logo %}
+        <img src="{{ site.logo.url }}" alt="Paramita Heritage School" />
+      {% else %}
+        <div class="nav-logo-text">
+          Paramita Heritage School
+          <span class="nav-logo-sub">Est. 1996 · CBSE Affiliated</span>
+        </div>
+      {% endif %}
+    </a>
+
+    <ul class="nav-menu" id="navMenu">
+      {% for item in nav_items %}
+        <li class="nav-item {% if item.children.all %}has-dropdown{% endif %}">
+          <a href="{{ item.url }}" {% if item.open_new_tab %}target="_blank"{% endif %} class="nav-link-item">
+            {{ item.label }}
+            {% if item.children.all %}<i class="fas fa-chevron-down nav-arrow"></i>{% endif %}
+          </a>
+          {% if item.children.all %}
+            <ul class="nav-dropdown">
+              {% for child in item.children.all %}
+                <li><a href="{{ child.url }}" {% if child.open_new_tab %}target="_blank"{% endif %}><span>{{ child.label }}</span></a></li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </li>
+      {% empty %}
+        <li class="nav-item has-dropdown">
+          <a href="#" class="nav-link-item">About Us <i class="fas fa-chevron-down nav-arrow"></i></a>
+          <ul class="nav-dropdown">
+            <li><a href="#principal"><span>Principal Message</span></a></li>
+            <li><a href="#"><span>Chairman Message</span></a></li>
+            <li><a href="#"><span>Board Members</span></a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a href="#" class="nav-link-item">Our Branches</a></li>
+        <li class="nav-item has-dropdown">
+          <a href="#" class="nav-link-item">Why Paramita <i class="fas fa-chevron-down nav-arrow"></i></a>
+          <ul class="nav-dropdown">
+            <li><a href="#features"><span>Expertise</span></a></li>
+            <li><a href="#"><span>Service Models</span></a></li>
+            <li><a href="#"><span>Signature Programs</span></a></li>
+          </ul>
+        </li>
+        <li class="nav-item has-dropdown">
+          <a href="#" class="nav-link-item">Updates <i class="fas fa-chevron-down nav-arrow"></i></a>
+          <ul class="nav-dropdown">
+            <li><a href="#"><span>Mandatory Public Disclosure</span></a></li>
+          </ul>
+        </li>
+        <li class="nav-item has-dropdown">
+          <a href="#" class="nav-link-item">Careers <i class="fas fa-chevron-down nav-arrow"></i></a>
+          <ul class="nav-dropdown">
+            <li><a href="https://careers.paramitaschools.in/" target="_blank"><span>Apply Online</span></a></li>
+          </ul>
+        </li>
+      {% endfor %}
+    </ul>
+
+    <div class="nav-actions">
+      <a href="{{ site.parent_login_url|default:'#' }}" class="btn-parent-login">
+        <i class="fas fa-user-circle"></i> Parent Login
+      </a>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+
+<!-- ══════════════════════════════════════════
+     HERO — 3D CAROUSEL
+══════════════════════════════════════════ -->
+<section class="hero-section" id="heroSection">
+  <div class="hero-stage">
+
+    {% if slides %}
+      {% for slide in slides %}
+      <div class="hero-slide {% if forloop.first %}active{% endif %}" data-index="{{ forloop.counter0 }}">
+        <div class="slide-bg">
+          <img src="{{ slide.image.url }}" alt="{{ slide.title }}" />
+        </div>
+        <div class="slide-overlay-gradient"></div>
+        <div class="slide-overlay-vignette"></div>
+        <div class="slide-frame"><span class="frame-tl"></span><span class="frame-br"></span></div>
+        <div class="container h-100">
+          <div class="slide-content">
+            <div class="slide-badge"><span class="badge-dot"></span><span>Paramita Heritage School</span></div>
+            <h1 class="slide-title">{{ slide.title }}</h1>
+            {% if slide.subtitle %}<p class="slide-subtitle">{{ slide.subtitle }}</p>{% endif %}
+            <div class="slide-cta">
+              {% if slide.btn1_text %}<a href="{{ slide.btn1_link|default:'#' }}" class="hero-btn hero-btn-primary">{{ slide.btn1_text }}<span class="btn-shine"></span></a>{% endif %}
+              {% if slide.btn2_text %}<a href="{{ slide.btn2_link|default:'#' }}" class="hero-btn hero-btn-outline">{{ slide.btn2_text }}</a>{% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+
+    {% else %}
+      <!-- ── DEFAULT 3 SLIDES (shown until admin adds real slides) ── -->
+      <div class="hero-slide active" data-index="0">
+        <div class="slide-bg slide-grad-1">
+          <svg class="slide-pattern" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice">
+            <circle cx="200" cy="150" r="300" fill="none" stroke="white" stroke-width="1" opacity=".25"/>
+            <circle cx="650" cy="450" r="180" fill="none" stroke="white" stroke-width="1" opacity=".18"/>
+            <line x1="0" y1="0" x2="800" y2="600" stroke="white" stroke-width=".5" opacity=".12"/>
+            <polygon points="700,40 800,190 600,190" fill="none" stroke="white" stroke-width="1" opacity=".18"/>
+          </svg>
+        </div>
+        <div class="slide-overlay-gradient"></div>
+        <div class="slide-overlay-vignette"></div>
+        <div class="slide-frame"><span class="frame-tl"></span><span class="frame-br"></span></div>
+        <div class="container h-100">
+          <div class="slide-content">
+            <div class="slide-badge"><span class="badge-dot"></span><span>Paramita Heritage School</span></div>
+            <h1 class="slide-title">Unleashing Potential Through Holistic Education</h1>
+            <p class="slide-subtitle">CBSE Affiliated · Karimnagar, Telangana · Est. 1996 · Where every child discovers their unique genius</p>
+            <div class="slide-cta">
+              <a href="#" class="hero-btn hero-btn-primary">Application Form<span class="btn-shine"></span></a>
+              <a href="#" class="hero-btn hero-btn-outline">Admission Enquiry</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-slide" data-index="1">
+        <div class="slide-bg slide-grad-2">
+          <svg class="slide-pattern" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice">
+            <rect x="80" y="80" width="640" height="440" fill="none" stroke="white" stroke-width="1" opacity=".18"/>
+            <circle cx="400" cy="300" r="260" fill="none" stroke="white" stroke-width="1" opacity=".15"/>
+            <line x1="800" y1="0" x2="0" y2="600" stroke="white" stroke-width=".5" opacity=".12"/>
+          </svg>
+        </div>
+        <div class="slide-overlay-gradient"></div>
+        <div class="slide-overlay-vignette"></div>
+        <div class="slide-frame"><span class="frame-tl"></span><span class="frame-br"></span></div>
+        <div class="container h-100">
+          <div class="slide-content">
+            <div class="slide-badge"><span class="badge-dot"></span><span>Academic Excellence</span></div>
+            <h1 class="slide-title">Building Tomorrow's Leaders in Today's Classrooms</h1>
+            <p class="slide-subtitle">Award-winning educators · State-of-the-art facilities · Proven track record of outstanding CBSE results</p>
+            <div class="slide-cta">
+              <a href="#" class="hero-btn hero-btn-primary">Explore Curriculum<span class="btn-shine"></span></a>
+              <a href="#" class="hero-btn hero-btn-outline">Virtual Tour</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-slide" data-index="2">
+        <div class="slide-bg slide-grad-3">
+          <svg class="slide-pattern" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice">
+            <polygon points="0,0 380,0 0,380" fill="none" stroke="white" stroke-width="1" opacity=".2"/>
+            <polygon points="800,600 420,600 800,220" fill="none" stroke="white" stroke-width="1" opacity=".2"/>
+            <circle cx="400" cy="300" r="160" fill="none" stroke="white" stroke-width="1" opacity=".15"/>
+          </svg>
+        </div>
+        <div class="slide-overlay-gradient"></div>
+        <div class="slide-overlay-vignette"></div>
+        <div class="slide-frame"><span class="frame-tl"></span><span class="frame-br"></span></div>
+        <div class="container h-100">
+          <div class="slide-content">
+            <div class="slide-badge"><span class="badge-dot"></span><span>Signature Programs</span></div>
+            <h1 class="slide-title">Where Character Meets Excellence in Every Child</h1>
+            <p class="slide-subtitle">Sports · Arts · Music · STEM · Leadership · Life Skills — A complete developmental journey</p>
+            <div class="slide-cta">
+              <a href="#" class="hero-btn hero-btn-primary">Our Programs<span class="btn-shine"></span></a>
+              <a href="#" class="hero-btn hero-btn-outline">Meet Our Faculty</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+  </div><!-- /hero-stage -->
+
+  <!-- Progress Bar -->
+  <div class="hero-progress"><div class="hero-progress-fill" id="heroProgressFill"></div></div>
+
+  <!-- Controls -->
+  <div class="hero-controls">
+    <div class="hero-counter">
+      <span class="counter-current" id="counterCurrent">01</span>
+      <span class="counter-sep"></span>
+      <span class="counter-total" id="counterTotal">{% if slides %}{{ slides|length|stringformat:"02d" }}{% else %}03{% endif %}</span>
+    </div>
+
+    <div class="hero-dots" id="heroDots">
+      {% if slides %}
+        {% for slide in slides %}
+          <button class="hero-dot {% if forloop.first %}active{% endif %}" data-index="{{ forloop.counter0 }}" aria-label="Slide {{ forloop.counter }}"></button>
+        {% endfor %}
+      {% else %}
+        <button class="hero-dot active" data-index="0" aria-label="Slide 1"></button>
+        <button class="hero-dot" data-index="1" aria-label="Slide 2"></button>
+        <button class="hero-dot" data-index="2" aria-label="Slide 3"></button>
+      {% endif %}
+    </div>
+
+    <div class="hero-arrows">
+      <button class="hero-arrow" id="heroPrev" aria-label="Previous"><i class="fas fa-arrow-left"></i></button>
+      <button class="hero-arrow" id="heroNext" aria-label="Next"><i class="fas fa-arrow-right"></i></button>
+    </div>
+  </div>
+
+  <!-- Scroll Indicator -->
+  <div class="scroll-indicator">
+    <div class="scroll-mouse"><div class="scroll-wheel"></div></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     FEATURES STRIP
+══════════════════════════════════════════ -->
+<section class="features-section" id="features">
+  <div class="container">
+    <div class="features-grid">
+      {% if features %}
+        {% for feature in features %}
+        <div class="feature-card tilt-card" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:1 }}00">
+          <div class="feature-card-inner">
+            <div class="feature-icon-wrap">
+              <img src="{{ feature.icon.url }}" alt="{{ feature.title }}" />
+              <div class="feature-icon-glow"></div>
+            </div>
+            <h3 class="feature-title">{{ feature.title }}</h3>
+            <p class="feature-desc">{{ feature.description }}</p>
+            <div class="feature-card-border"></div>
+          </div>
+        </div>
+        {% endfor %}
+      {% else %}
+        <!-- Default Feature Cards -->
+        <div class="feature-card tilt-card" data-aos="fade-up" data-aos-delay="100">
+          <div class="feature-card-inner">
+            <div class="feature-icon-wrap">
+              <div class="feature-icon-placeholder"><i class="fas fa-child"></i></div>
+              <div class="feature-icon-glow"></div>
+            </div>
+            <h3 class="feature-title">Unique Child</h3>
+            <p class="feature-desc">An effective program fosters a lifelong love for learning, exploring, creating, imagining and stretching to the boundaries of what is possible.</p>
+            <div class="feature-card-border"></div>
+          </div>
+        </div>
+        <div class="feature-card tilt-card" data-aos="fade-up" data-aos-delay="200">
+          <div class="feature-card-inner">
+            <div class="feature-icon-wrap">
+              <div class="feature-icon-placeholder"><i class="fas fa-heart"></i></div>
+              <div class="feature-icon-glow"></div>
+            </div>
+            <h3 class="feature-title">Care</h3>
+            <p class="feature-desc">With the right environment and teaching methods, children's cognitive, social, physical, emotional, and creative abilities grow and strengthen.</p>
+            <div class="feature-card-border"></div>
+          </div>
+        </div>
+        <div class="feature-card tilt-card" data-aos="fade-up" data-aos-delay="300">
+          <div class="feature-card-inner">
+            <div class="feature-icon-wrap">
+              <div class="feature-icon-placeholder"><i class="fas fa-hands-helping"></i></div>
+              <div class="feature-icon-glow"></div>
+            </div>
+            <h3 class="feature-title">Collaboration</h3>
+            <p class="feature-desc">Effective and constant communication with parents is key to the overall development of child across all areas of growth.</p>
+            <div class="feature-card-border"></div>
+          </div>
+        </div>
+        <div class="feature-card tilt-card" data-aos="fade-up" data-aos-delay="400">
+          <div class="feature-card-inner">
+            <div class="feature-icon-wrap">
+              <div class="feature-icon-placeholder"><i class="fas fa-compass"></i></div>
+              <div class="feature-icon-glow"></div>
+            </div>
+            <h3 class="feature-title">Explorative</h3>
+            <p class="feature-desc">An effective program fosters a lifelong love for learning, exploring, creating, imagining and stretching to the boundaries of what is possible.</p>
+            <div class="feature-card-border"></div>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     INTRODUCTION
+══════════════════════════════════════════ -->
+<section class="intro-section section-pad" id="introduction">
+  <div class="container">
+    {% if introduction %}
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6" data-aos="fade-right" data-aos-duration="900">
+        <div class="intro-image-wrap">
+          <img src="{{ introduction.image.url }}" alt="{{ introduction.heading }}" class="intro-img float-anim" />
+          <div class="intro-img-deco"></div>
+          <div class="intro-img-badge"><span class="badge-year">Est. 1996</span></div>
+        </div>
+      </div>
+      <div class="col-lg-6" data-aos="fade-left" data-aos-duration="900">
+        <div class="section-label">{{ introduction.section_label }}</div>
+        <h2 class="section-heading">{{ introduction.heading }}</h2>
+        <div class="gold-divider"></div>
+        <p class="section-text">{{ introduction.content }}</p>
+      </div>
+    </div>
+    {% else %}
+    <!-- Default Introduction -->
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6" data-aos="fade-right" data-aos-duration="900">
+        <div class="intro-image-wrap">
+          <div class="intro-img-placeholder float-anim">
+            <i class="fas fa-school"></i>
+          </div>
+          <div class="intro-img-deco"></div>
+          <div class="intro-img-badge"><span class="badge-year">Est. 1996</span></div>
+        </div>
+      </div>
+      <div class="col-lg-6" data-aos="fade-left" data-aos-duration="900">
+        <div class="section-label">Introduction</div>
+        <h2 class="section-heading">Welcome to Paramita Heritage School, Karimnagar</h2>
+        <div class="gold-divider"></div>
+        <p class="section-text">Paramita Heritage School is one of Telangana's most respected CBSE-affiliated institutions, dedicated to nurturing well-rounded individuals who excel academically, socially, and morally.</p>
+        <p class="section-text mt-3">Our holistic approach to education combines rigorous academics with co-curricular excellence, ensuring each student develops into a confident, compassionate, and capable global citizen ready to lead tomorrow's world.</p>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     ABOUT — IGNITING POTENTIAL
+══════════════════════════════════════════ -->
+<section class="about-section section-pad bg-deep" id="about">
+  <div class="container">
+    {% if about %}
+    <div class="row align-items-center g-5 flex-lg-row-reverse">
+      <div class="col-lg-6" data-aos="fade-left" data-aos-duration="900">
+        <div class="about-image-wrap">
+          <img src="{{ about.image.url }}" alt="{{ about.heading }}" class="about-img float-anim-slow" />
+          <div class="about-img-deco-ring"></div>
+        </div>
+      </div>
+      <div class="col-lg-6" data-aos="fade-right" data-aos-duration="900">
+        <div class="section-label light">{{ about.section_label }}</div>
+        <h2 class="section-heading light">{{ about.heading }}</h2>
+        <div class="gold-divider"></div>
+        <p class="section-text light">{{ about.content }}</p>
+        {% if about.btn_text %}
+        <a href="{{ about.btn_link|default:'#' }}" class="btn-gold mt-4">{{ about.btn_text }} <i class="fas fa-arrow-right ms-2"></i></a>
+        {% endif %}
+      </div>
+    </div>
+    {% else %}
+    <!-- Default About -->
+    <div class="row align-items-center g-5 flex-lg-row-reverse">
+      <div class="col-lg-6" data-aos="fade-left" data-aos-duration="900">
+        <div class="about-image-wrap">
+          <div class="about-img-placeholder float-anim-slow">
+            <i class="fas fa-graduation-cap"></i>
+          </div>
+          <div class="about-img-deco-ring"></div>
+        </div>
+      </div>
+      <div class="col-lg-6" data-aos="fade-right" data-aos-duration="900">
+        <div class="section-label light">About Us</div>
+        <h2 class="section-heading light">Paramita Heritage — Igniting Potential, Inspiring Greatness</h2>
+        <div class="gold-divider"></div>
+        <p class="section-text light">For over two decades, Paramita Heritage School has been the benchmark of quality education in Karimnagar. Our sprawling, state-of-the-art campus is equipped with modern laboratories, a rich library, performing arts centre, and world-class sports facilities.</p>
+        <p class="section-text light mt-3">We are proud of our consistent 100% CBSE board results, national-level sports champions, and alumni who are making their mark across India and the world.</p>
+        <a href="#" class="btn-gold mt-4 d-inline-flex">Know More <i class="fas fa-arrow-right ms-2"></i></a>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     PRINCIPAL MESSAGE
+══════════════════════════════════════════ -->
+<section class="principal-section section-pad" id="principal">
+  <div class="container">
+    <div class="text-center mb-5" data-aos="fade-up">
+      <div class="section-label">Leadership</div>
+      <h2 class="section-heading">Message from Our Principal</h2>
+      <div class="gold-divider mx-auto"></div>
+    </div>
+    {% if principal %}
+    <div class="principal-card" data-aos="zoom-in" data-aos-duration="800">
+      <div class="principal-card-inner">
+        <div class="principal-img-col">
+          <div class="principal-img-wrap principal-style-{{ principal.image_style }}">
+            <img src="{{ principal.image.url }}" alt="{{ principal.name }}" />
+            {% if principal.image_style != 'hexagon' %}
+            <div class="principal-img-ring"></div>
+            {% endif %}
+          </div>
+          <div class="principal-identity">
+            <h4>{{ principal.name }}</h4>
+            <span>{{ principal.designation }}</span>
+          </div>
+        </div>
+        <div class="principal-msg-col">
+          <div class="quote-icon"><i class="fas fa-quote-left"></i></div>
+          <p class="principal-salutation"><strong>{{ principal.salutation }}</strong></p>
+          <p class="principal-text">{{ principal.message|truncatewords:120 }}</p>
+          {% if principal.btn_text %}
+          <a href="{{ principal.btn_link|default:'#' }}" class="btn-gold-outline">{{ principal.btn_text }} <i class="fas fa-arrow-right ms-2"></i></a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% else %}
+    <!-- Default Principal Card -->
+    <div class="principal-card" data-aos="zoom-in" data-aos-duration="800">
+      <div class="principal-card-inner">
+        <div class="principal-img-col">
+          <div class="principal-img-wrap">
+            <div class="principal-avatar-placeholder">P</div>
+            <div class="principal-img-ring"></div>
+          </div>
+          <div class="principal-identity">
+            <h4>Dr. Principal Name</h4>
+            <span>Principal, Paramita Heritage School</span>
+          </div>
+        </div>
+        <div class="principal-msg-col">
+          <div class="quote-icon"><i class="fas fa-quote-left"></i></div>
+          <p class="principal-salutation"><strong>Dear Parents, Students, and Esteemed Staff Members,</strong></p>
+          <p class="principal-text">It is with great pride and immense joy that I welcome you to Paramita Heritage School — a place where dreams are nurtured, potential is unleashed, and character is built alongside academic achievement. At Paramita, we believe that education goes beyond textbooks. We strive to create an environment where every student feels valued, inspired, and empowered to reach their highest potential. Our dedicated faculty works tirelessly to ensure that each child receives personalised attention and the best learning experiences possible.</p>
+          <a href="#" class="btn-gold-outline">Read Full Message <i class="fas fa-arrow-right ms-2"></i></a>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     TESTIMONIALS
+══════════════════════════════════════════ -->
+<section class="testimonial-section section-pad bg-deep" id="reviews">
+  <div class="container">
+    <div class="text-center mb-5" data-aos="fade-up">
+      <div class="section-label light">Community</div>
+      <h2 class="section-heading light">Straight from our School Family</h2>
+      <div class="gold-divider mx-auto"></div>
+    </div>
+    <div class="testimonial-track-wrap">
+      <div class="testimonial-track" id="testimonialTrack">
+        {% if testimonials %}
+          {% for t in testimonials %}
+          <div class="testimonial-card tilt-card">
+            <div class="testimonial-card-inner">
+              <div class="testimonial-stars">
+                {% for i in "12345" %}
+                  {% if forloop.counter <= t.rating %}<i class="fas fa-star"></i>{% else %}<i class="far fa-star"></i>{% endif %}
+                {% endfor %}
+              </div>
+              <p class="testimonial-text">"{{ t.review|truncatewords:60 }}"</p>
+              <div class="testimonial-author">
+                {% if t.avatar %}
+                  <img src="{{ t.avatar.url }}" alt="{{ t.name }}" class="testimonial-avatar" />
+                {% else %}
+                  <div class="testimonial-avatar-placeholder">{{ t.name|first }}</div>
+                {% endif %}
+                <div class="testimonial-info">
+                  <strong>{{ t.name }}</strong>
+                  <span>{{ t.date|date:"M d, Y" }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        {% else %}
+          <!-- Default Testimonials -->
+          <div class="testimonial-card tilt-card">
+            <div class="testimonial-card-inner">
+              <div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+              <p class="testimonial-text">"Paramita Heritage School has been a transformative experience for our son. The teachers are incredibly dedicated, and the school's focus on both academics and extracurriculars has helped him blossom into a confident young man."</p>
+              <div class="testimonial-author">
+                <div class="testimonial-avatar-placeholder" style="background:linear-gradient(135deg,#8B0000,#C9A227)">R</div>
+                <div class="testimonial-info"><strong>Rajesh Kumar</strong><span>Parent of Class X Student</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-card tilt-card">
+            <div class="testimonial-card-inner">
+              <div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+              <p class="testimonial-text">"The school's environment is outstanding. My daughter has excelled in both her studies and dance. The principal and teachers are truly caring individuals who go above and beyond for every child."</p>
+              <div class="testimonial-author">
+                <div class="testimonial-avatar-placeholder" style="background:linear-gradient(135deg,#0d1b3e,#1a3a5c)">P</div>
+                <div class="testimonial-info"><strong>Priya Sharma</strong><span>Parent of Class VIII Student</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-card tilt-card">
+            <div class="testimonial-card-inner">
+              <div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+              <p class="testimonial-text">"As an alumnus of Paramita, I can say this school shaped who I am today. The values instilled here, the friendships made, and the knowledge gained are truly priceless. Highly recommended to every parent!"</p>
+              <div class="testimonial-author">
+                <div class="testimonial-avatar-placeholder" style="background:linear-gradient(135deg,#1a2a0d,#0d2a2a)">A</div>
+                <div class="testimonial-info"><strong>Anil Varma</strong><span>Alumnus, Batch of 2019</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-card tilt-card">
+            <div class="testimonial-card-inner">
+              <div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+              <p class="testimonial-text">"The infrastructure, teaching quality, and student care at Paramita Heritage is simply unmatched in Karimnagar. My children have flourished here. We are grateful to the entire school family!"</p>
+              <div class="testimonial-author">
+                <div class="testimonial-avatar-placeholder" style="background:linear-gradient(135deg,#5a0000,#a81b1b)">M</div>
+                <div class="testimonial-info"><strong>Meena Rao</strong><span>Parent of Class VI &amp; IX Students</span></div>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+      <div class="testimonial-nav">
+        <button class="testi-arrow" id="testiPrev"><i class="fas fa-chevron-left"></i></button>
+        <button class="testi-arrow" id="testiNext"><i class="fas fa-chevron-right"></i></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     CTA BANNER
+══════════════════════════════════════════ -->
+<section class="cta-section" id="enroll">
+  <div class="cta-bg" {% if cta and cta.bg_image %}style="background-image:url('{{ cta.bg_image.url }}')"{% endif %}>
+    <div class="cta-overlay"></div>
+    <div class="container cta-content" data-aos="zoom-in" data-aos-duration="700">
+      <div class="cta-particles"><span></span><span></span><span></span><span></span><span></span></div>
+      <h2>{% if cta %}{{ cta.heading }}{% else %}Enroll Today &amp; Take the First Step Toward Excellence!{% endif %}</h2>
+      {% if cta and cta.subheading %}<p>{{ cta.subheading }}</p>{% else %}<p>Admissions open for 2025–26 · Limited seats available · Apply before March 31st</p>{% endif %}
+      <a href="{% if cta %}{{ cta.btn_link }}{% else %}#{% endif %}" class="cta-btn">
+        {% if cta %}{{ cta.btn_text }}{% else %}Contact Us Now{% endif %}
+        <i class="fas fa-arrow-right ms-2"></i>
+      </a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     SOCIAL FEED
+══════════════════════════════════════════ -->
+<section class="social-section section-pad" id="social">
+  <div class="container">
+    <div class="text-center mb-5" data-aos="fade-up">
+      <div class="section-label">Social</div>
+      <h2 class="section-heading">Straight Inside from Our School</h2>
+      <div class="gold-divider mx-auto"></div>
+      <p class="section-sub">Follow Us On Social Media</p>
+    </div>
+    <div class="social-grid">
+      {% if social_feeds %}
+        {% for post in social_feeds %}
+        <a href="{{ post.link }}" target="_blank" class="social-card" data-aos="zoom-in" data-aos-delay="{{ forloop.counter0|add:1 }}00">
+          <img src="{{ post.image.url }}" alt="{{ post.caption }}" />
+          <div class="social-card-overlay">
+            <i class="fab fa-{{ post.platform }}"></i>
+            {% if post.caption %}<span>{{ post.caption|truncatewords:10 }}</span>{% endif %}
+          </div>
+        </a>
+        {% endfor %}
+      {% else %}
+        <!-- Default Social Placeholders -->
+        {% for n in "123456" %}
+        <a href="#" class="social-card social-card-placeholder" data-aos="zoom-in" data-aos-delay="{{ forloop.counter }}00">
+          <div class="social-placeholder-bg s{{ forloop.counter }}">
+            <i class="fab fa-instagram"></i>
+          </div>
+          <div class="social-card-overlay">
+            <i class="fab fa-instagram"></i>
+            <span>School Moments</span>
+          </div>
+        </a>
+        {% endfor %}
+      {% endif %}
+    </div>
+    <div class="social-follow-links text-center mt-5" data-aos="fade-up">
+      {% if footer and footer.instagram_url %}
+        <a href="{{ footer.instagram_url }}" target="_blank" class="social-pill instagram"><i class="fab fa-instagram"></i> Instagram</a>
+      {% else %}
+        <a href="#" class="social-pill instagram"><i class="fab fa-instagram"></i> Instagram</a>
+      {% endif %}
+      {% if footer and footer.facebook_url %}
+        <a href="{{ footer.facebook_url }}" target="_blank" class="social-pill facebook"><i class="fab fa-facebook-f"></i> Facebook</a>
+      {% else %}
+        <a href="#" class="social-pill facebook"><i class="fab fa-facebook-f"></i> Facebook</a>
+      {% endif %}
+      {% if footer and footer.youtube_url %}
+        <a href="{{ footer.youtube_url }}" target="_blank" class="social-pill youtube"><i class="fab fa-youtube"></i> YouTube</a>
+      {% else %}
+        <a href="#" class="social-pill youtube"><i class="fab fa-youtube"></i> YouTube</a>
+      {% endif %}
+      {% if footer and footer.linkedin_url %}
+        <a href="{{ footer.linkedin_url }}" target="_blank" class="social-pill linkedin"><i class="fab fa-linkedin-in"></i> LinkedIn</a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════ -->
+<footer class="site-footer" id="footer">
+  <div class="footer-wave">
+    <svg viewBox="0 0 1440 80" preserveAspectRatio="none"><path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="#0d1117"/></svg>
+  </div>
+  <div class="footer-body">
+    <div class="container">
+      <div class="row g-4">
+
+        <div class="col-lg-4 col-md-6">
+          {% if site.footer_logo or site.logo %}
+            <img src="{% if site.footer_logo %}{{ site.footer_logo.url }}{% else %}{{ site.logo.url }}{% endif %}" alt="Paramita Heritage School" class="footer-logo" />
+          {% else %}
+            <div class="footer-logo-text">Paramita Heritage School</div>
+          {% endif %}
+          <p class="footer-brand-desc">Affiliated with CBSE, New Delhi. Nurturing excellence since 1996. A leader in holistic, value-based education in Telangana.</p>
+          <div class="footer-social-icons">
+            <a href="{% if footer and footer.facebook_url %}{{ footer.facebook_url }}{% else %}#{% endif %}" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="{% if footer and footer.instagram_url %}{{ footer.instagram_url }}{% else %}#{% endif %}" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="{% if footer and footer.youtube_url %}{{ footer.youtube_url }}{% else %}#{% endif %}" target="_blank"><i class="fab fa-youtube"></i></a>
+            <a href="{% if footer and footer.linkedin_url %}{{ footer.linkedin_url }}{% else %}#{% endif %}" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+
+        <div class="col-lg-2 col-md-6">
+          <h5 class="footer-heading">Quick Links</h5>
+          <ul class="footer-links">
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#principal">Principal Message</a></li>
+            <li><a href="#features">Why Paramita</a></li>
+            <li><a href="#reviews">Reviews</a></li>
+            <li><a href="#enroll">Admissions</a></li>
+            <li><a href="#">Careers</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+          <h5 class="footer-heading">Contact Us</h5>
+          <ul class="footer-contact-list">
+            <li><i class="fas fa-map-marker-alt"></i><span>{% if footer %}{{ footer.address }}{% else %}#2-61/3/2, Vemulawada Road, Padmanagar, Karimnagar, Telangana - 505001{% endif %}</span></li>
+            <li><i class="fas fa-phone-alt"></i><span>{% if footer %}{{ footer.phone1 }}{% if footer.phone2 %}, {{ footer.phone2 }}{% endif %}{% else %}+91 8886127373, +91 8106292424{% endif %}</span></li>
+            <li><i class="fas fa-envelope"></i><span>{% if footer %}{{ footer.email }}{% else %}heritageschool@paramita.in{% endif %}</span></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+          <h5 class="footer-heading">We Are Here</h5>
+          <div class="footer-map-wrap">
+            <iframe
+              src="{% if footer and footer.map_embed_url %}{{ footer.map_embed_url }}{% else %}https://maps.google.com/maps?q=Paramita+Heritage+School+Karimnagar&t=m&z=14&output=embed&iwloc=near{% endif %}"
+              width="100%" height="200" style="border:0;" allowfullscreen="" loading="lazy">
+            </iframe>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container d-flex flex-wrap justify-content-between align-items-center">
+      <span>{% if footer %}{{ footer.copyright_text }}{% else %}© 2025 Paramita Schools. All Rights Reserved.{% endif %}</span>
+      <a href="#" class="footer-privacy">Privacy Policy</a>
+    </div>
+  </div>
+</footer>
+
+<button class="back-to-top" id="backToTop" aria-label="Back to top"><i class="fas fa-chevron-up"></i></button>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+<script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>
