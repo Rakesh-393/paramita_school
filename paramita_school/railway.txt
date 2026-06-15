@@ -26,6 +26,7 @@ Notes:
 - Railway storage is not persistent for uploaded media unless you use cloud storage.
 - If Railway fails on `python-3.11.0`, keep `runtime.txt` set to `python-3.11.9` or another supported 3.11 patch release.
 - If Railway fails with GitHub attestation errors for Python, keep `mise.toml` with `python.github_attestations = false`.
+- If you see `no such table: home_sitesettings`, Railway is still using SQLite or migrations have not run. Add Railway PostgreSQL, set `DATABASE_URL`, redeploy, then run `python manage.py migrate`.
 
 Recommended Railway variables:
 - `SECRET_KEY=django-insecure-4x9v2z7k1m6p3q8r5t0y1u4i7o2a6s9d8f5g3h2j1k0l7n4b6c`
