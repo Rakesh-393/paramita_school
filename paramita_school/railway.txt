@@ -24,6 +24,7 @@ Step-by-step Railway deployment:
 Notes:
 - SQLite is only for local development.
 - Railway storage is not persistent for uploaded media unless you use cloud storage.
+- If Railway fails on `python-3.11.0`, keep `runtime.txt` set to `python-3.11.9` or another supported 3.11 patch release.
 
 Recommended Railway variables:
 - `SECRET_KEY=django-insecure-4x9v2z7k1m6p3q8r5t0y1u4i7o2a6s9d8f5g3h2j1k0l7n4b6c`
