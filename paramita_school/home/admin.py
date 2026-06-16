@@ -171,6 +171,13 @@ class SocialFeedAdmin(admin.ModelAdmin):
     list_editable = ['order', 'is_active']
     list_display_links = ['image_preview', 'caption']
     readonly_fields    = ['image_preview']
+    fieldsets = [
+        ('Post Details', {'fields': ['platform', 'custom_platform', 'image', 'image_preview', 'link', 'caption']}),
+        ('Settings',     {'fields': ['order', 'is_active']}),
+    ]
+
+    class Media:
+        js = ('admin/js/social_feed_other.js',)
 
 
 # ─── FOOTER ──────────────────────────────────────────────────────────────────

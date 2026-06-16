@@ -234,8 +234,10 @@ class SocialFeed(models.Model):
         ('instagram', 'Instagram'),
         ('facebook',  'Facebook'),
         ('youtube',   'YouTube'),
+        ('other',     'Other'),
     ]
-    platform  = models.CharField(max_length=20, choices=PLATFORM_CHOICES, default='instagram')
+    platform         = models.CharField(max_length=20, choices=PLATFORM_CHOICES, default='instagram')
+    custom_platform  = models.CharField(max_length=50, blank=True, help_text='Specify platform name if "Other" is selected')
     image     = models.ImageField(upload_to='social/')
     link      = models.URLField()
     caption   = models.CharField(max_length=300, blank=True)
