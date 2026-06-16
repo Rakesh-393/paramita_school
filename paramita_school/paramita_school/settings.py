@@ -11,6 +11,7 @@ SECRET_KEY = config('SECRET_KEY', default='django-insecure-4x9v2z7k1m6p3q8r5t0y1
 DEBUG = config('DEBUG', default=True, cast=bool)
 
 ALLOWED_HOSTS = [host.strip() for host in config('ALLOWED_HOSTS', default='*').split(',') if host.strip()]
+CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in config('CSRF_TRUSTED_ORIGINS', default='https://spectacular-mindfulness-production-1bdf.up.railway.app').split(',') if origin.strip()]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
